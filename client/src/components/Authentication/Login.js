@@ -101,7 +101,7 @@ const Login = () => {
           isLoading={uploadLoading}>
           Login
         </Button>
-        <Button
+        {/* <Button
           variant='solid'
           colorScheme='red'
           width='100%'
@@ -110,7 +110,7 @@ const Login = () => {
             setPassword('12345');
           }}>
           Get Guest User Credentials
-        </Button>
+        </Button> */}
       </FormControl>
     </VStack>
   );

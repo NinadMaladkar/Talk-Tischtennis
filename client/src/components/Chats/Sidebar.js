@@ -18,6 +18,7 @@ import {
   Box,
   Input,
   useToast,
+  Spinner,
 } from '@chakra-ui/react';
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { useHistory } from 'react-router-dom';
@@ -26,12 +27,17 @@ import axios from 'axios';
 
 import ChatLoading from './ChatLoading';
 import ProfileModal from '../Profile/ProfileModal';
-import { ChatState } from '../../Context/ChatProvider';
+import {
+  ChatState,
+  setSelectedChat,
+  chats,
+  setChats,
+} from '../../Context/ChatProvider';
 import UserListItem from '../Users/UserListItem';
 
 const Sidebar = () => {
   const history = useHistory();
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState();
   const [loading, setLoading] = useState();
   const [loadingChat, setLoadingChat] = useState();
@@ -45,9 +51,44 @@ const Sidebar = () => {
     history.push('/');
   };
 
-  const { user } = ChatState();
+  const { user, chats, setSelectedChat, setChats } = ChatState();
 
-  const accessChat = (userId) => {};
+  const accessChat = async (userId) => {
+    console.log(userId);
+    try {
+      setLoadingChat(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const response = await axios.post(
+        `http://localhost:5000/api/chat`,
+        { userId: userId },
+        config
+      );
+
+      if (!chats.find((c) => c._id === response.data._id)) {
+        setChats([response.data, ...chats]);
+      }
+
+      setSelectedChat(response.data);
+      setLoadingChat(false);
+      onClose();
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: 'Error fetching the chat',
+        description: error.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-right',
+      });
+      return;
+    }
+  };
 
   const handleSearch = async () => {
     if (!search) {
@@ -83,6 +124,7 @@ const Sidebar = () => {
         `http://localhost:5000/api/user?search=${search}`,
         config
       );
+
       setLoading(false);
       setSearchResult(response.data);
     } catch (error) {
@@ -184,6 +226,7 @@ const Sidebar = () => {
                 />
               ))
             )}
+            {loadingChat && <Spinner ml='auto' display='flex' />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
