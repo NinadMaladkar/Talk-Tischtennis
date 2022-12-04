@@ -6,6 +6,7 @@ import axios from 'axios';
 import { ChatState } from '../../Context/ChatProvider';
 import ChatLoading from './ChatLoading';
 import { getSender } from '../../config/ChatLogic';
+import GroupChatModal from './GroupChatModal';
 
 const MyChats = () => {
   const [loggedUser, setLoggedUser] = useState();
@@ -60,12 +61,14 @@ const MyChats = () => {
         justifyContent='space-between'
         alignItems='center'>
         My Chats
-        <Button
-          display='flex'
-          fontSize={{ base: '17px', md: '10px', lg: '17px' }}
-          rightIcon={<AddIcon />}>
-          New Group Chat
-        </Button>
+        <GroupChatModal>
+          <Button
+            display='flex'
+            fontSize={{ base: '17px', md: '10px', lg: '17px' }}
+            rightIcon={<AddIcon />}>
+            New Group Chat
+          </Button>
+        </GroupChatModal>
       </Box>
       <Box
         display='flex'
