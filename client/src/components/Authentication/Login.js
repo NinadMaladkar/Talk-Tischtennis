@@ -83,7 +83,8 @@ const Login = () => {
             placeholder='Enter your Password'
             onChange={(e) => {
               setPassword(e.target.value);
-            }}></Input>
+            }}
+          />
           <InputRightElement width='4.5rem'>
             <Button h='1.75rem' size='small' onClick={handleClick}>
               {show ? 'Hide' : 'Show'}
@@ -91,27 +92,15 @@ const Login = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
-      <FormControl>
-        <Button
-          color='black'
-          colorScheme='blue'
-          width='100%'
-          style={{ marginTop: 15 }}
-          onClick={submitHandler}
-          isLoading={uploadLoading}>
-          Login
-        </Button>
-        {/* <Button
-          variant='solid'
-          colorScheme='red'
-          width='100%'
-          onClick={() => {
-            setEmail('guest@example.com');
-            setPassword('12345');
-          }}>
-          Get Guest User Credentials
-        </Button> */}
-      </FormControl>
+      <Button
+        color='black'
+        colorScheme='blue'
+        width='100%'
+        style={{ marginTop: 15 }}
+        onClick={submitHandler}
+        isLoading={uploadLoading}>
+        Login
+      </Button>
     </VStack>
   );
 };

@@ -134,7 +134,7 @@ const SignUp = () => {
           }}
         />
       </FormControl>
-      <FormControl isRequired>
+      <FormControl id='email' isRequired>
         <FormLabel>Email</FormLabel>
         <Input
           borderWidth={1}
@@ -191,16 +191,16 @@ const SignUp = () => {
             postDetails(e.target.files[0]);
           }}
         />
-        <Button
-          color='black'
-          colorScheme='blue'
-          width='100%'
-          style={{ marginTop: 15 }}
-          onClick={submitHandler}
-          isLoading={uploadLoading}>
-          Sign Up
-        </Button>
       </FormControl>
+      <Button
+        color='black'
+        colorScheme='blue'
+        width='100%'
+        style={{ marginTop: 15 }}
+        onClick={submitHandler}
+        isLoading={uploadLoading}>
+        Sign Up
+      </Button>
     </VStack>
   );
 };

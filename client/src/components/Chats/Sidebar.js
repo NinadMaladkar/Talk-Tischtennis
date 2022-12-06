@@ -27,12 +27,7 @@ import axios from 'axios';
 
 import ChatLoading from './ChatLoading';
 import ProfileModal from '../Profile/ProfileModal';
-import {
-  ChatState,
-  setSelectedChat,
-  chats,
-  setChats,
-} from '../../Context/ChatProvider';
+import { ChatState, setSelectedChat, chats } from '../../Context/ChatProvider';
 import UserListItem from '../Users/UserListItem';
 
 const Sidebar = () => {
