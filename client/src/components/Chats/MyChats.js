@@ -5,16 +5,16 @@ import axios from 'axios';
 
 import { ChatState } from '../../Context/ChatProvider';
 import ChatLoading from './ChatLoading';
-import { getSender } from '../../config/ChatLogic';
+import { getSenderName } from '../../config/ChatLogic';
 import GroupChatModal from './GroupChatModal';
 
-const MyChats = () => {
+const MyChats = ({ fetchChats }) => {
   const [loggedUser, setLoggedUser] = useState();
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
   const toast = useToast();
 
-  const fetchChats = async () => {
+  const fetchAllChats = async () => {
     try {
       const config = {
         headers: { Authorization: `Bearer ${user.token}` },
@@ -38,8 +38,8 @@ const MyChats = () => {
 
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem('userInfo')));
-    fetchChats();
-  }, []);
+    fetchAllChats();
+  }, [fetchChats]);
 
   return (
     <Box
@@ -93,7 +93,7 @@ const MyChats = () => {
                 key={chat._id}>
                 <Text>
                   {!chat.isGroupChat
-                    ? getSender(loggedUser, chat.users)
+                    ? getSenderName(loggedUser, chat.users)
                     : chat.chatName}
                 </Text>
               </Box>
