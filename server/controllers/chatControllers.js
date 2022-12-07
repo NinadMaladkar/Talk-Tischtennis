@@ -82,7 +82,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
       .send('At least 2 users are required for a group chat');
   }
 
-  users.push(req.users);
+  users.push(req.user);
 
   try {
     const groupChat = await Chat.create({
