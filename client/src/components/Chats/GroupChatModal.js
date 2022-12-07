@@ -80,6 +80,9 @@ const GroupChatModal = ({ children }) => {
         headers: { Authorization: `Bearer ${user.token}` },
       };
 
+      setSelectedUsers([...selectedUsers, user._id]);
+      // console.log(selectedUsers, ' < all users in the group', user);
+
       const response = await axios.post(
         `http://localhost:5000/api/chat/create-group`,
         {
@@ -123,7 +126,6 @@ const GroupChatModal = ({ children }) => {
       return;
     }
     setSelectedUsers([...selectedUsers, userToAdd]);
-    console.log(selectedUsers);
   };
   return (
     <>

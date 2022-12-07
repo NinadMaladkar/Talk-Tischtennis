@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const connectDB = require('../config/db');
 const userRoutes = require('../routes/userRoutes');
 const chatRoutes = require('../routes/chatRoutes');
+const messageRoutes = require('../routes/messageRoutes');
 const { notFound, errorHandler } = require('../middlerware/errorMiddleware');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -21,6 +22,7 @@ app.use(
 
 app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/message', messageRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
