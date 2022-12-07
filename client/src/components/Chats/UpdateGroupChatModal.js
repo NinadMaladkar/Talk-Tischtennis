@@ -54,13 +54,11 @@ const UpdateGroupChatModal = ({ fetchChats, setFetchChats }) => {
         config
       );
       setSelectedChat(response.data);
-      // setFetchChats(!fetchChats);
       setRenameLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast({
         title: 'An error occurred!',
-        // description: error.response.data.message,
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -70,6 +68,7 @@ const UpdateGroupChatModal = ({ fetchChats, setFetchChats }) => {
       return;
     }
     setGroupChatName('');
+    onClose();
   };
   const handleSearch = async (query) => {
     setSearch(query);
@@ -87,7 +86,6 @@ const UpdateGroupChatModal = ({ fetchChats, setFetchChats }) => {
         `http://localhost:5000/api/user?search=${search}`,
         config
       );
-      console.log(response.data);
       setLoading(false);
       setSearchResult(response.data);
     } catch (error) {
@@ -245,7 +243,6 @@ const UpdateGroupChatModal = ({ fetchChats, setFetchChats }) => {
               <Input
                 placeholder='Chat Name'
                 mb={3}
-                value={groupChatName}
                 onChange={(e) => setGroupChatName(e.target.value)}
               />
               <Button
@@ -263,14 +260,6 @@ const UpdateGroupChatModal = ({ fetchChats, setFetchChats }) => {
                 mb={3}
                 onChange={(e) => handleSearch(e.target.value)}
               />
-              {/* <Button
-                variant='solid'
-                backgroundColor='teal'
-                ml={1}
-                isLoading={renameLoading}
-                onClick={handleSearch}>
-                Update
-              </Button> */}
             </FormControl>
             {loading ? (
               <Spinner size='lg' />
