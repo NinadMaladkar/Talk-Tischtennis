@@ -18,7 +18,6 @@ const ChatBox = ({ fetchChats, setFetchChats }) => {
       w={{ base: '100%', md: '65%' }}
       borderRadius='lg'
       borderWidth='1px'>
-      <Input placeholder='enter chat' />
       <SingleChat fetchChats={fetchChats} setFetchChats={setFetchChats} />
     </Box>
   );
