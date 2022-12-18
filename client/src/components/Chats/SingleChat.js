@@ -22,6 +22,7 @@ import UpdateGroupChatModal from './UpdateGroupChatModal';
 import ScrollableChat from './ScrollableChat';
 import '../../App.css';
 import animationData from '../../animations/typing_loading.json';
+import loadingAnimation from '../../animations/loading.json';
 
 const ENDPOINT = 'http://localhost:5000';
 var socket, selectedChatCompare;
@@ -42,6 +43,15 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
     loop: true,
     autoplay: true,
     animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+
+  const loadingOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: loadingAnimation,
     rendererSettings: {
       preserveAspectRatio: 'xMidYMid slice',
     },
@@ -216,12 +226,17 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
             borderRadius='lg'
             overflowY='hidden'>
             {loading ? (
-              <Spinner
-                sieze='xl'
-                w={20}
-                h={20}
-                alignSelf='center'
-                margin='auto'
+              // <Spinner
+              //   sieze='xl'
+              //   w={20}
+              //   h={20}
+              //   alignSelf='center'
+              //   margin='auto'
+              // />
+              <Lottie
+                width='50px'
+                options={loadingOptions}
+                style={{ marginBottom: 5, marginLeft: 0 }}
               />
             ) : (
               <div>
