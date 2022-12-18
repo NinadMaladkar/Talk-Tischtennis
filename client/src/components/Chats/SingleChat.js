@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import axios from 'axios';
+import io from 'socket.io-client';
 
 import { ChatState } from '../../Context/ChatProvider';
 import { getSenderName, getSenderDetails } from '../../config/ChatLogic';
@@ -19,6 +20,9 @@ import ProfileModal from '../Profile/ProfileModal';
 import UpdateGroupChatModal from './UpdateGroupChatModal';
 import ScrollableChat from './ScrollableChat';
 import '../../App.css';
+
+const ENDPOINT = 'http://localhost:5000';
+var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchChats, setFetchChats }) => {
   const { user, selectedChat, setSelectedChat } = ChatState();
@@ -28,6 +32,7 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState('');
+  const [socketConnected, setSocketConnected] = useState(false);
 
   const sendMessage = async (event) => {
     event.preventDefault();
@@ -47,7 +52,7 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
           },
           config
         );
-        console.log(response.data);
+        socket.emit('new message', response.data);
         setMessages([...messages, response.data]);
       } catch (error) {
         toast({
@@ -88,6 +93,8 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
       console.log(messages);
 
       setLoading(false);
+
+      socket.emit('join chat', selectedChat._id);
     } catch (error) {
       toast({
         title: 'An error occurred!',
@@ -102,8 +109,30 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
   };
 
   useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit('setup', user);
+    socket.on('connection', () => {
+      setSocketConnected(true);
+    });
+  });
+
+  useEffect(() => {
     fetchMesssages();
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on('message received', (newMessage) => {
+      if (
+        !selectedChatCompare |
+        (selectedChatCompare._id !== newMessage.chat._id)
+      ) {
+        // Notification
+      } else {
+        setMessages([...messages, newMessage]);
+      }
+    });
+  });
 
   return (
     <>
