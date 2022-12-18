@@ -13,6 +13,7 @@ import {
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import io from 'socket.io-client';
+import Lottie from 'react-lottie';
 
 import { ChatState } from '../../Context/ChatProvider';
 import { getSenderName, getSenderDetails } from '../../config/ChatLogic';
@@ -20,6 +21,7 @@ import ProfileModal from '../Profile/ProfileModal';
 import UpdateGroupChatModal from './UpdateGroupChatModal';
 import ScrollableChat from './ScrollableChat';
 import '../../App.css';
+import animationData from '../../animations/typing_loading.json';
 
 const ENDPOINT = 'http://localhost:5000';
 var socket, selectedChatCompare;
@@ -33,10 +35,22 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState('');
   const [socketConnected, setSocketConnected] = useState(false);
+  const [typing, setTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
 
   const sendMessage = async (event) => {
     event.preventDefault();
     if (event.key === 'Enter' && newMessage) {
+      socket.emit('stop typing', selectedChat._id);
       try {
         const config = {
           headers: { Authorization: `Bearer ${user.token}` },
@@ -70,6 +84,23 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
+    if (!socketConnected) return;
+
+    if (!typing) {
+      setTyping(true);
+      socket.emit('typing', selectedChat._id);
+    }
+
+    let lastTypingTime = new Date().getTime();
+
+    setTimeout(() => {
+      let timeNow = new Date().getTime();
+      let timeDifference = timeNow - lastTypingTime;
+      if (timeDifference >= 3000 && typing) {
+        socket.emit('stop typing', selectedChat._id);
+        setTyping(false);
+      }
+    }, 3000);
   };
 
   const fetchMesssages = async () => {
@@ -90,7 +121,6 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
         config
       );
       setMessages(response.data);
-      console.log(messages);
 
       setLoading(false);
 
@@ -111,8 +141,14 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit('setup', user);
-    socket.on('connection', () => {
+    socket.on('connected', () => {
       setSocketConnected(true);
+    });
+    socket.on('typing', () => {
+      setIsTyping(true);
+    });
+    socket.on('stop typing', () => {
+      setIsTyping(false);
     });
   });
 
@@ -193,6 +229,15 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
               </div>
             )}
 
+            {isTyping && (
+              <div>
+                <Lottie
+                  width='50px'
+                  options={defaultOptions}
+                  style={{ marginBottom: 5, marginLeft: 0 }}
+                />
+              </div>
+            )}
             <FormControl onKeyUp={sendMessage} isRequired mt={3} display='flex'>
               <Input
                 variant='filled'
