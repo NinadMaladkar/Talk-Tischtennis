@@ -5,8 +5,6 @@ import {
   FormControl,
   IconButton,
   Input,
-  Spinner,
-  Stack,
   Text,
   useToast,
 } from '@chakra-ui/react';
@@ -28,7 +26,8 @@ const ENDPOINT = 'http://localhost:5000';
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchChats, setFetchChats }) => {
-  const { user, selectedChat, setSelectedChat } = ChatState();
+  const { user, selectedChat, setSelectedChat, notification, setNotification } =
+    ChatState();
 
   const toast = useToast();
 
@@ -160,7 +159,7 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
     socket.on('stop typing', () => {
       setIsTyping(false);
     });
-  });
+  }, []);
 
   useEffect(() => {
     fetchMesssages();
@@ -170,15 +169,18 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
   useEffect(() => {
     socket.on('message received', (newMessage) => {
       if (
-        !selectedChatCompare |
-        (selectedChatCompare._id !== newMessage.chat._id)
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessage.chat._id
       ) {
-        // Notification
+        if (!notification.includes(newMessage)) {
+          setNotification([newMessage, ...notification]);
+          setFetchChats(!fetchChats);
+        }
       } else {
         setMessages([...messages, newMessage]);
       }
     });
-  });
+  }, [messages]);
 
   return (
     <>
