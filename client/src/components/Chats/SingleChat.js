@@ -21,8 +21,9 @@ import ScrollableChat from './ScrollableChat';
 import '../../App.css';
 import animationData from '../../animations/typing_loading.json';
 import loadingAnimation from '../../animations/loading.json';
+import { HEROKU_ENDPOINT } from '../../config/config';
 
-const ENDPOINT = 'http://localhost:5000';
+const ENDPOINT = HEROKU_ENDPOINT;
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchChats, setFetchChats }) => {
