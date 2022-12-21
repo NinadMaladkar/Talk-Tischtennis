@@ -23,6 +23,7 @@ import axios from 'axios';
 import { ChatState } from '../../Context/ChatProvider';
 import UserBadgeItem from '../Users/UserBadgeItem';
 import UserListItem from '../Users/UserListItem';
+import { SERVER_URI } from '../../config/config';
 
 const UpdateGroupChatModal = ({
   fetchChats,
@@ -50,7 +51,7 @@ const UpdateGroupChatModal = ({
       };
 
       const response = await axios.put(
-        `http://localhost:5000/api/chat/rename-group`,
+        `${SERVER_URI}api/chat/rename-group`,
         {
           chatId: selectedChat._id,
           chatName: groupChatName,
@@ -87,7 +88,7 @@ const UpdateGroupChatModal = ({
       };
 
       const response = await axios.get(
-        `http://localhost:5000/api/user?search=${search}`,
+        `${SERVER_URI}api/user?search=${search}`,
         config
       );
       setLoading(false);
@@ -134,7 +135,7 @@ const UpdateGroupChatModal = ({
         headers: { Authorization: `Bearer ${user.token}` },
       };
       const response = await axios.put(
-        `http://localhost:5000/api/chat/add-to-group`,
+        `${SERVER_URI}api/chat/add-to-group`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
@@ -175,7 +176,7 @@ const UpdateGroupChatModal = ({
         headers: { Authorization: `Bearer ${user.token}` },
       };
       const response = await axios.put(
-        `http://localhost:5000/api/chat/remove-from-group`,
+        `${SERVER_URI}api/chat/remove-from-group`,
         {
           chatId: selectedChat._id,
           userId: user1._id,

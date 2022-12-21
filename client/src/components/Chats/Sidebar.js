@@ -32,6 +32,7 @@ import ProfileModal from '../Profile/ProfileModal';
 import { ChatState } from '../../Context/ChatProvider';
 import UserListItem from '../Users/UserListItem';
 import { getSenderName } from '../../config/ChatLogic';
+import { SERVER_URI } from '../../config/config';
 
 const Sidebar = () => {
   const history = useHistory();
@@ -69,7 +70,7 @@ const Sidebar = () => {
       };
 
       const response = await axios.post(
-        `http://localhost:5000/api/chat`,
+        `${SERVER_URI}api/chat`,
         { userId: userId },
         config
       );
@@ -126,7 +127,7 @@ const Sidebar = () => {
       };
 
       const response = await axios.get(
-        `http://localhost:5000/api/user?search=${search}`,
+        `${SERVER_URI}api/user?search=${search}`,
         config
       );
 

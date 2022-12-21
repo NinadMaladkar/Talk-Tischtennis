@@ -3,8 +3,9 @@ import { Button, VStack, useToast } from '@chakra-ui/react';
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-
 import React, { useState } from 'react';
+
+import { SERVER_URI } from '../../config/config';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -36,7 +37,7 @@ const Login = () => {
         password: password,
       };
       const response = await axios.post(
-        'http://localhost:5000/api/user/login',
+        `${SERVER_URI}api/user/login`,
         postData
       );
 

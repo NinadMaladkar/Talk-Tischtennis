@@ -21,9 +21,9 @@ import ScrollableChat from './ScrollableChat';
 import '../../App.css';
 import animationData from '../../animations/typing_loading.json';
 import loadingAnimation from '../../animations/loading.json';
-import { HEROKU_ENDPOINT } from '../../config/config';
+import { SERVER_URI } from '../../config/config';
 
-const ENDPOINT = HEROKU_ENDPOINT;
+const ENDPOINT = SERVER_URI;
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchChats, setFetchChats }) => {
@@ -69,7 +69,7 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
         // setting newMessage to empty so that after enter it will instantly clear the input field but won't affect the API call
         setNewMessage('');
         const response = await axios.post(
-          `http://localhost:5000/api/message`,
+          `${SERVER_URI}api/message`,
           {
             content: newMessage,
             chatId: selectedChat._id,
@@ -126,7 +126,7 @@ const SingleChat = ({ fetchChats, setFetchChats }) => {
       // setting newMessage to empty so that after enter it will instantly clear the input field but won't affect the API call
       setNewMessage('');
       const response = await axios.get(
-        `http://localhost:5000/api/message/${selectedChat._id}`,
+        `${SERVER_URI}api/message/${selectedChat._id}`,
 
         config
       );

@@ -20,6 +20,7 @@ import axios from 'axios';
 import { ChatState } from '../../Context/ChatProvider';
 import UserListItem from '../Users/UserListItem';
 import UserBadgeItem from '../Users/UserBadgeItem';
+import { SERVER_URI } from '../../config/config';
 
 const GroupChatModal = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -46,7 +47,7 @@ const GroupChatModal = ({ children }) => {
       };
 
       const response = await axios.get(
-        `http://localhost:5000/api/user?search=${search}`,
+        `${SERVER_URI}api/user?search=${search}`,
         config
       );
       console.log(response.data);
@@ -84,7 +85,7 @@ const GroupChatModal = ({ children }) => {
       // console.log(selectedUsers, ' < all users in the group', user);
 
       const response = await axios.post(
-        `http://localhost:5000/api/chat/create-group`,
+        `${SERVER_URI}api/chat/create-group`,
         {
           name: groupChatName,
           users: JSON.stringify(selectedUsers.map((u) => u._id)),

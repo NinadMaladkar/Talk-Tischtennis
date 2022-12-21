@@ -7,6 +7,7 @@ import { ChatState } from '../../Context/ChatProvider';
 import ChatLoading from './ChatLoading';
 import { getSenderName } from '../../config/ChatLogic';
 import GroupChatModal from './GroupChatModal';
+import { SERVER_URI } from '../../config/config';
 
 const MyChats = ({ fetchChats }) => {
   const [loggedUser, setLoggedUser] = useState();
@@ -20,10 +21,7 @@ const MyChats = ({ fetchChats }) => {
         headers: { Authorization: `Bearer ${user.token}` },
       };
 
-      const response = await axios.get(
-        `http://localhost:5000/api/chat`,
-        config
-      );
+      const response = await axios.get(`${SERVER_URI}api/chat`, config);
       setChats(response.data);
     } catch (error) {
       toast({

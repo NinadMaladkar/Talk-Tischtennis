@@ -4,6 +4,7 @@ import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { SERVER_URI } from '../../config/config';
 
 const SignUp = () => {
   const [show, setShow] = useState(false);
@@ -93,10 +94,7 @@ const SignUp = () => {
         password: password,
         pic: pic,
       };
-      const response = await axios.post(
-        'http://localhost:5000/api/user',
-        postData
-      );
+      const response = await axios.post(`${SERVER_URI}api/user`, postData);
 
       toast({
         title: 'Registration successful',

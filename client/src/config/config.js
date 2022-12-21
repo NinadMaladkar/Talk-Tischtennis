@@ -1,1 +1,1 @@
-export const HEROKU_ENDPOINT = 'https://talk-tischtennis.herokuapp.com/';
+export const SERVER_URI = 'https://talk-tischtennis.herokuapp.com/';
