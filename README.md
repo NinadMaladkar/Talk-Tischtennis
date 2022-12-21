@@ -1,6 +1,6 @@
 # Talk-Tischtennis
 
-Link to the App - talk-tischtennis.netlify.app
+Link to the App - [talk-tischtennis.netlify.app](talk-tischtennis.netlify.app)
 
 This is a MERN stack based chat application specially designed for table tennis enthusiasts to talk to each other, 
 make appointments to practice together or just to discuss about table tennis related things. 
