@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const connectDB = require('../config/db');
+
+const mongoose = require('mongoose');
 const userRoutes = require('../routes/userRoutes');
 const chatRoutes = require('../routes/chatRoutes');
 const messageRoutes = require('../routes/messageRoutes');
@@ -25,6 +26,10 @@ app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/message', messageRoutes);
 
+app.get('/', (req, res) => {
+  res.send('Hello world from SERVER!');
+});
+
 // ======================= Deployment =======================
 
 const __dirname1 = path.resolve();
@@ -48,6 +53,18 @@ if (process.env.NODE_ENV === 'production') {
 app.use(notFound);
 app.use(errorHandler);
 
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`MongoDB connected: `, conn.connection.host);
+  } catch (error) {
+    console.error('Error: ', error);
+    process.exit;
+  }
+};
 connectDB();
 const port = process.env.PORT || 5000;
 
